@@ -1,0 +1,11 @@
+Collect audio in 1 - 1.5 second fragments using queue for total of 2 - 3 fragments
+
+Transcribe the all fragments put together
+
+Put into Whipser
+
+Compare to existing transcript and change when deviation occurs
+
+Account for first three seconds of empty queue/transcript
+
+3 threads: record chunks, record entire audio, transcribe chunks

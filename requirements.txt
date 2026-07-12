@@ -1,0 +1,6 @@
+wheel
+pytorch
+openai-whisper
+sounddevice
+wavio
+pydub
