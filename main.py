@@ -6,7 +6,6 @@ import os
 import threading
 import whisper
 from pydub import AudioSegment
-import time
 
 # Create a queue to hold audio chunks safely
 audio_queue = queue.Queue()
@@ -29,30 +28,22 @@ chunk_number = 1
 
 model = whisper.load_model("turbo")
 
-transcript = ""
-previous_text = ""
-start_time = time.perf_counter()
-
 def transcriber():
     global chunk_number
     global model
 
-    pointer = 1
+    pointer = 3
 
     while True:
-        if pointer < chunk_number:
-            # Prep audio chunk for transcribing
-            if chunk_number < 3:
-                x
-            else:
-                print(f"Thread: {chunk_number - 2}, {chunk_number - 1}, {chunk_number}")
-                segemnt1 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer - 2}.wav"), format = "wav")
-                segment2 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer - 1}.wav"), format = "wav")
-                segment3 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer}.wav"), format = "wav")
-                
-                final = segemnt1 + segment2 + segment3
-                final.export("tchunk.wav",format="wav")
-                
+        if chunk_number >= 3 and pointer < chunk_number:
+            print(f"Thread: {chunk_number - 2}, {chunk_number - 1}, {chunk_number}")
+            segemnt1 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer - 2}.wav"), format = "wav")
+            segment2 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer - 1}.wav"), format = "wav")
+            segment3 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer}.wav"), format = "wav")
+            
+            final = segemnt1 + segment2 + segment3
+            final.export("tchunk.wav",format="wav")
+            
             #Check if audio chunk is silent to avoid hallucination
             audio = AudioSegment.from_file("tchunk.wav")
             average_level = audio.dBFS
@@ -65,13 +56,7 @@ def transcriber():
                 file = open("transcript.txt", "a")
                 file.write(result["text"] + "\n")
 
-            elapsed = time.perf_counter() - 
-
-            if previous_text == "":
-                transcript.append(result["text"])
-
             pointer += 1
-            
 
 # Open and run the input stream
 try:
