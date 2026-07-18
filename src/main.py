@@ -42,18 +42,18 @@ def transcriber():
         if chunk_number >= 3 and pointer < chunk_number:
             # Prep audio chunk for transcribing
             print(f"Thread: {chunk_number - 2}, {chunk_number - 1}, {chunk_number}")
-            segemnt1 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer - 2}.wav"), format = "wav")
-            segment2 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer - 1}.wav"), format = "wav")
-            segment3 = AudioSegment.from_file(file = os.path.join("chunks", f"chunk{pointer}.wav"), format = "wav")
+            segemnt1 = AudioSegment.from_file(file = f"chunks/chunk{pointer - 2}.wav", format = "wav")
+            segment2 = AudioSegment.from_file(file = f"chunks/chunk{pointer - 1}.wav", format = "wav")
+            segment3 = AudioSegment.from_file(file = f"chunks/chunk{pointer}.wav", format = "wav")
             
             final = segemnt1 + segment2 + segment3
-            final.export("tchunk.wav",format="wav")
+            final.export("chunks/tchunk.wav",format="wav")
                 
             #Check if audio chunk is silent to avoid hallucination
-            audio = AudioSegment.from_file("tchunk.wav")
+            audio = AudioSegment.from_file("chunks/tchunk.wav")
             average_level = audio.dBFS
             if average_level > -50:
-                result = model.transcribe("tchunk.wav", language="en", word_timestamps=False, condition_on_previous_text=False)
+                result = model.transcribe("chunks/tchunk.wav", language="en", word_timestamps=False, condition_on_previous_text=False)
                 text = result["text"].replace("?", "").replace("!", "").replace(".", "").replace(",", "").lower().lstrip() + " "
                 print(average_level)
 
