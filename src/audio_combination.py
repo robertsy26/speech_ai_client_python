@@ -3,17 +3,16 @@ import os
 from pathlib import Path
 
 
-final = AudioSegment.from_file(file = os.path.join("chunks", "chunk1.wav"), format = "wav")
+final = AudioSegment.from_file(file = "../chunks/chunk1.wav", format = "wav")
 
-path = Path('\chunks')
-file_count = len(os.listdir("chunks"))
+file_count = len(os.listdir("../chunks"))
 print(f"File Count: {file_count}")
 
 for num in range(2, file_count + 1):
-    final += AudioSegment.from_file(file = os.path.join("chunks", f"chunk{num}.wav"), format = "wav")
+    final += AudioSegment.from_file(file = f"../chunks/chunk{num}.wav", format = "wav")
     print(f"Added Chunk {num}")
 
-final.export("recording.wav", format="wav")
+final.export("../recording.wav", format="wav")
 
 
 '''
