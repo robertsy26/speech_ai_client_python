@@ -6,7 +6,6 @@ import os
 import threading
 import whisper
 from pydub import AudioSegment
-import time
 from text_edit import edit
 
 # Create a queue to hold audio chunks safely
@@ -32,14 +31,14 @@ model = whisper.load_model("turbo")
 
 transcript = ""
 previous_text = ""
-start_time = time.perf_counter()
 
 def transcriber():
-    global chunk_number, model, transcript, start_time, previous_text
+    global chunk_number, model, transcript, previous_text
     pointer = 3
-    text = ""
 
     while True:
+        text = ""
+
         if chunk_number >= 3 and pointer < chunk_number:
             # Prep audio chunk for transcribing
             print(f"Thread: {chunk_number - 2}, {chunk_number - 1}, {chunk_number}")
@@ -53,26 +52,20 @@ def transcriber():
             #Check if audio chunk is silent to avoid hallucination
             audio = AudioSegment.from_file("tchunk.wav")
             average_level = audio.dBFS
-            if average_level <= -50:
-                print("")
-            else:
+            if average_level > -50:
                 result = model.transcribe("tchunk.wav", language="en", word_timestamps=False, condition_on_previous_text=False)
-                text = result["text"].replace("?", "").replace("!", "").replace(".", "").lower().lstrip() + " "
+                text = result["text"].replace("?", "").replace("!", "").replace(".", "").replace(",", "").lower().lstrip() + " "
                 print(average_level)
-                print(result["text"])
-                file = open("transcript.txt", "a")
-                file.write(result["text"] + "\n")
 
-            elapsed = time.perf_counter() - start_time
-
-            
-            if previous_text == "" or elapsed >= 1.5:
-                transcript += text
-                start_time = time.perf_counter()
-            else:
-                if previous_text != text:
-                    transcript = edit(transcript, text)
-                    previous_text = text
+            if text != "":
+                if previous_text == "":
+                    print(text)
+                    transcript += text
+                else:
+                    if previous_text != text:
+                        print(f"previous_text: {previous_text}, text: {text}")
+                        transcript = edit(transcript, text)
+            previous_text = text
             
             pointer += 1
             print(transcript)
@@ -108,10 +101,15 @@ try:
                     sampwidth=2  # 16-bit audio
                 )
 
-                print(f"Saved {filename}")
-                print(f"Main: {chunk_number}")
+                silence = AudioSegment.from_file(filename)
 
-                chunk_number += 1
+                if silence.dBFS <= -50:
+                    os.remove(filename)
+                else:
+                    print(f"Saved {filename}")
+                    print(f"Main: {chunk_number}")
+
+                    chunk_number += 1
 
                 # Keep any leftover samples
                 leftover = audio[SAMPLES_PER_CHUNK:]
