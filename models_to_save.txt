@@ -1,0 +1,3 @@
+OpenAI-Whisper: turbo
+Argostranslate: en to ja
+deepmultilingualpunctuation: PunctuationModel?
