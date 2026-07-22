@@ -15,11 +15,23 @@ package_to_install = next(
 argostranslate.package.install_from_path(package_to_install.download())
 
 # Translate
-translatedText = argostranslate.translate.translate("does this program work let us find out", from_code, to_code)
+translatedText = argostranslate.translate.translate("just testing to see how well this.", from_code, to_code)
 print(translatedText)
 
-translatedText = argostranslate.translate.translate("does this program work? let us find out.", from_code, to_code)
+translatedText = argostranslate.translate.translate("just testing to see how well this program really works.", from_code, to_code)
 print(translatedText)
 
-translatedText = argostranslate.translate.translate("Does this program work? Let's find out.", from_code, to_code)
+translatedText = argostranslate.translate.translate("just testing to see how well this program really works. i wonder how well this program.", from_code, to_code)
+print(translatedText)
+
+translatedText = argostranslate.translate.translate("just testing to see how well this program really works. i wonder how well this program does work.", from_code, to_code)
+print(translatedText)
+
+text = "just testing to see how well this program really works. i wonder how well this program does work."
+print(text.count("."))
+
+translatedText = argostranslate.translate.translate("just testing to see how well this program really works i wonder how well this program does work", from_code, to_code)
+print(translatedText)
+
+translatedText = argostranslate.translate.translate("this is mister smith.", from_code, to_code)
 print(translatedText)

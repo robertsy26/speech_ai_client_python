@@ -9,3 +9,5 @@ Compare to existing transcript and change when deviation occurs
 Account for first three seconds of empty queue/transcript
 
 3 threads: record chunks, record entire audio, transcribe chunks
+
+Run transcript through punct_restore and see how punctuation looks; find final punctuation and back-track until previous punctuation; Find a way to match punctuated transcript to normal transcript
