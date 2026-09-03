@@ -123,7 +123,7 @@ def translator(arg1):
 
                 count = punctuated.count(".") + punctuated.count("?")
                 if count >= 2:
-                    print(argostranslate.translate.translate(block, from_code, to_code))
+                    #print(argostranslate.translate.translate(block, from_code, to_code))
                     sentence = ""
 
                     for letter in range(len(block)):
@@ -134,10 +134,12 @@ def translator(arg1):
                             start_pointer += letter
                             break
                     punct_transcript += sentence + " "
+                    print("1")
                     print(punct_transcript)
                 else:
+                    print("2")
                     print(punct_transcript + punctuated)
-                    print(argostranslate.translate.translate(block, from_code, to_code))
+                    #print(argostranslate.translate.translate(block, from_code, to_code))
                 print(f"punct_transcript: {punct_transcript}, Thread: {threading.current_thread()}")
 
 
