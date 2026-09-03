@@ -1,0 +1,27 @@
+import threading
+
+# Create a shared resource and a lock
+shared_counter = 0
+counter_lock = threading.Lock()
+
+def increment_counter():
+    global shared_counter
+    
+    # Thread safely acquires and automatically releases the lock
+    with counter_lock:
+        # Critical section: only one thread can execute this at a time
+        local_copy = shared_counter
+        local_copy += 1
+        shared_counter = local_copy
+
+# Example of creating and running threads
+threads = []
+for _ in range(10):
+    t = threading.Thread(target=increment_counter)
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+
+print(f"Final counter value: {shared_counter}")
